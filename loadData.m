@@ -1,0 +1,12 @@
+load nir_data.mat;
+spec1X =spec1(:,1:301);
+spec1Y = conc(:,1);
+spec2Y = spec1Y;
+spec2X = spec2(:,1:301);
+load corn.mat;
+mp5Y = propvals.data(:,3);
+mp5X = mp5spec.data;
+m5X = m5spec.data;
+m5Y = mp5Y;
+mp6X = mp6spec.data;
+mp6Y = mp5Y;
