@@ -5,7 +5,7 @@ var_threshold_array = [0.80, 0.90, 0.95, 0.99, 0.999];
 sparity_array = [10, 20, 50, 100, 150, 200];
 nMaxLV = 10;
 splite_percent1 = 0.3;
-splite_percent2 = 0.3;
+splite_percent2 = 0.8;
 which_data = 1;
 nVarX = 20;
 epsilon = 1;
@@ -33,6 +33,7 @@ for i = 1:1:length(skiplist)
     else
         [TestXt, TestYt,TrainXt, TrainYt ] = preprocess_data(Xt,  yt, 1-splite_percent2);
     end
+    size(TrainXt)
     epsilon = 1/size(TrainXs,1);
     RMSECV = zeros(length(var_threshold_array),nMaxLV);
     R2= zeros(length(var_threshold_array),nMaxLV);
@@ -136,7 +137,7 @@ for z = 1:1:length(skiplist2)
     ylabel("R^2_{cv}");
     legend(["nVarX = 5", "nVarX = 10", "nVarX = 20", "nVarX = 50","nVarX = 100"],'Location','southeast');
     SCIPlot;
-   % MySaveFig(fig,strFileName+preStr);
+    %MySaveFig(fig,strFileName+preStr);
     preStr = "_nVarX_compare";
     %figure('Name',strFileName+preStr);
     for j = 1:1:4
@@ -155,7 +156,7 @@ for z = 1:1:length(skiplist2)
         xlabel("WaveLength (nm)");
         ylabel("$\beta_{SDOP}$","Interpreter" , "latex");
         SCIPlot;
-        %MySaveFig(fig,strFileName+preStr+num2str(j));
+      %  MySaveFig(fig,strFileName+preStr+num2str(j));
     end
     preStr = "_nMean_compare";
     %figure('Name',strFileName+preStr);
@@ -178,7 +179,7 @@ for z = 1:1:length(skiplist2)
     xlabel("WaveLength (nm)");
     ylabel("Intensity (a.u.)");
     SCIPlot;
-    MySaveFig(fig,strFileName+preStr+"2");
+    %MySaveFig(fig,strFileName+preStr+"2");
     nvarX = nVarX_SDOP(z);
     model = sparsepls1(XCorrected, TrainYs, LV_SDOP(z), nvarX);
     preStr = "_nBeta_compare";
@@ -196,12 +197,26 @@ for z = 1:1:length(skiplist2)
     plot(wavelength,beta(2:end)'*(eye(size(E,1))-E),'LineWidth',1.5);
     hold on;
     plot(wavelength,model.B'*(eye(size(E,1))-E),'--','LineWidth',1.5);
-    legend(["$\beta_{DOP}*VV^\top$","$\beta_{SDOP}*VV^\top$"],"Location","northwest",Interpreter="latex");
+    legend(["$\beta_{DOP}*PP^\top$","$\beta_{SDOP}*PP^\top$"],"Location","northwest","Interpreter","latex");
     SCIPlot;
     xlabel("WaveLength (nm)");
-    ylabel("Projected $\beta$",Interpreter="latex");
-    MySaveFig(fig,strFileName+preStr);
+    ylabel("Projected $\beta$","Interpreter","latex");
+    %MySaveFig(fig,strFileName+preStr);
     %fprintf("Finish %s to %s \n",SrcArray(i),DestArray(i));
+    preStr = "_VIP";
+    fig = figure('Name',strFileName+preStr);
+    X0 = XCorrected-mean(XCorrected);
+    Y0 = TrainYs - mean(TrainYs);
+    vip = calculatePLS_VIP(model.W,X0,Y0);
+    bar(wavelength,vip,1.5);
+    xlabel("WaveLength (nm)");
+    ylabel("VIP");
+    xls = xlim();
+    hold on;
+    plot([0,3000],[1,1],'--','linewidth',1.5);
+    xlim(xls);
+    SCIPlot;
+    %MySaveFig(fig,strFileName+preStr);
 end
 
 function [TrainX, TrainY, TestX, TestY] = preprocess_data(X, y, splite_percent)

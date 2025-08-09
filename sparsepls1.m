@@ -5,6 +5,9 @@ function model = sparsepls1(X, Y, nlv, nvarX)
 % nlv: Number of latent variables to model
 % nvarX: Scalar indicating number of X variables kept per latent variable
 
+%This is a simiplied version for sparsepls2, which can ben found at github.com/josecamachop/MEDA-Toolbox
+
+
 % Default parameter settings
 maxiter = 500;         % Maximum iterations
 tol = 1e-6;            % Convergence tolerance
@@ -111,7 +114,7 @@ for h = 1:nlv
         u = u_new;
         
     end
-    fprintf("iter:%d \n",iter);
+  %  fprintf("iter:%d \n",iter);
     % Calculate loadings
     c = Xtemp' * t / (t' * t);
     d = Ytemp' * t / (t' * t);
