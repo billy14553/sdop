@@ -5,7 +5,7 @@ strPath = getSavePath();
 saveas(fig,strPath+"\"+name,'fig');
 pause(1);
 saveas(fig,strPath+"\"+name,'epsc');
-%pause(1);
-%saveas(fig,strPath+"\"+name,'bmp');
+pause(1);
+saveas(fig,strPath+"\"+name,'bmp');
 end
 

@@ -10,3 +10,14 @@ m5X = m5spec.data;
 m5Y = mp5Y;
 mp6X = mp6spec.data;
 mp6Y = mp5Y;
+% load raman.mat
+% 
+% portmanX = Xs;
+% portmanY = Ys;
+% horibaX = Xt;
+% horibaY = Yt;
+% 
+% portmanX = imresize(Xs, 0.2, 'nearest');
+% portmanY = imresize(Ys, 0.2, 'nearest');
+% horibaX = imresize(Xt, 0.2, 'nearest');
+% horibaY = imresize(Yt, 0.2, 'nearest');
